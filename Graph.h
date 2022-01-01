@@ -26,9 +26,9 @@ typedef struct Graph_{
 
 void add_node(pGraph *g,int id);
 void add_edge(pNode *src, pNode *dest ,int weight);
-
-
 void delete_graph(pGraph *g);
+void delete_node(pNode *node);
+pnode *get_node(pGraph *g, int id);
 
 
 
