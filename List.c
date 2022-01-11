@@ -12,10 +12,10 @@ typedef List_{
 
     GET_KEY getKeyFunc;
     DELETE_ELEMENT delElementFunc;
-    INSERT_ELEMENT InsertElementFunc;
     COMPARE CompareFunc;
     PRINT_ELEMENT printElementFunc;
 }List;
+
 
 
 static int internalFind(pList pLst, pKey key){
@@ -30,11 +30,13 @@ static int internalFind(pList pLst, pKey key){
   return -1;
 }
 
+
+
+
 pList CreateList(GET_KEY getKeyFunc,
   DELETE_ELEMENT delElementFunc,
   COMPARE CompareFunc,
-  PRINT_ELEMENT printElementFunc,
-  INSERT_ELEMENT InsertElementFunc)
+  PRINT_ELEMENT printElementFunc)
 {
 
   pList pLst;
@@ -45,7 +47,6 @@ pList CreateList(GET_KEY getKeyFunc,
     pLst->getKeyFunc = getKeyFunc;
     pLst->delElementFunc = delElementFunc;
     pLst->CompareFunc = CompareFunc;
-    pLst->InsertElementFunc = InsertElementFunc;
     pLst->printElementFunc = printElementFunc;
   }
   return pLst;
@@ -68,11 +69,8 @@ Bool AddElem(pList pLst,pElement pElem){
       pLst->elements = temp;
     }
   }
-  if(pLst->InsertElementFunc(pElem)){
-    pLst->used++;
-    return true;
-  }
-  return false;
+
+  return true;
 }
 
 pElement GetListElem(pList pLst, pKey key){
