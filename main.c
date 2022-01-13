@@ -5,8 +5,7 @@
 
 
 int main(){
-  //scanf("%c",&current_char);
-  //printf("%c",current_char);
+
   char current_function;
   int node_num;
   int V_size=0;
@@ -28,8 +27,6 @@ int main(){
         free(graph);
       }
       graph = createGraph();
-      //printf("27: %c %d \n",current_function,V_size);
-      //printf("%c %d ",current_function,V_size);
     }
     else if(current_char == 'T'){
       int tsp_k_size;
@@ -44,36 +41,26 @@ int main(){
         tspNodes[idx] = node_target;
         idx++;
       }
-      //pList lst = TSP(graph, tspNodes);
-      idx = 0;
-      printf("tsp:\n");
-      while(tsp_k_size > idx){
-        printf("%d\n",tspNodes[idx]);
-        idx++;
-      }
-      printf("-------\n");
 
-      //printList(lst);
-      //deleteList(lst);
+      idx = 0;
+      //tsp = TSP(graph,tpsNodes);
+      //printf("TSP shortest path: %d\n",tsp);
+
       free(tspNodes);
     }
     else if(current_char == 'S'){
       int n1,n2;
       scanf("%c %d %d",&current_function,&n1,&n2);
       int* pathLens = shortestPath(graph,n1);
-      int idx = 0;
-      while(4 > idx){
-        printf("%d\n",pathLens[idx]);
-        idx++;
-      }
+      
 
-      printf("shortest path: %d\n",pathLens[n2]);
+      printf("Dijsktra shortest path: %d \n",pathLens[n2]);
       free(pathLens);
     }
     else if(current_char == 'D'){
       int node_id;
       scanf("%c %d",&current_function,&node_id);
-      //removeNode(graph,node_id);
+
     }
     else if(current_char == 'B'){
       scanf("%c %d",&current_function,&node_num);
@@ -82,16 +69,11 @@ int main(){
     else if(current_char!=' ' &&(current_function == 'A' || current_function == 'B')){
       if(current_char == 'n'){
         scanf(" n %d",&node_num);
-        //printf("36: n %d \n",node_num);
-        //printf("n %d ",node_num);
-        //printf("%d\n",node_num);
         addNode(graph,node_num);
-        //printf("node %d\n",node_num);
-
       }
       else{
         scanf(" %d %d",&dest,&weight);
-        //printf("(%d->%d)(%d)",node_num,dest,weight);
+
         addEdge(graph,node_num,dest,weight);
 
       }
@@ -104,8 +86,7 @@ int main(){
 
 
   }while(current_char!='\n');
-  printGraph(graph);
   delGraph(graph);
-  printf("done");
+
   return 0;
 }
