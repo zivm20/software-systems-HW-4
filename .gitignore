@@ -1,3 +1,6 @@
 HW4_IO/*
+*.o
+*.so
+graph
 run_prog
 valgrind-out.txt

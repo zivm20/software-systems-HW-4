@@ -14,7 +14,7 @@ typedef struct List_{
     DELETE_ELEMENT delElementFunc;
     COMPARE CompareFunc;
     PRINT_ELEMENT printElementFunc;
-}List;
+}List, *pList;
 
 
 
@@ -125,6 +125,10 @@ Bool isin(pList pLst, pElement pElem){
   }
   return false;
 
+}
+
+int getSize(pList pLst){
+  return pLst->used;
 }
 
 void deleteList(pList pLst){

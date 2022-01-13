@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
+
 #include "List.h"
 #include "Node.c"
 #include "Edge.c"
@@ -108,8 +110,48 @@ void delGraph(pGraph graph){
   deleteList(graph->nodes);
   free(graph);
 }
+pNode getINode(pGraph graph, int i){
+  return (pNode)get(graph->nodes,i);
+}
+pEdge getIJEdge(pGraphgraph,int i, int j){
+  return (pEdge) get(getINode(graph,i)->edges_out,j);
+}
+
+int* shortestPath(pGraph graph, int src){
+  int* dist = malloc(sizeof(int)*getSize(graph->nodes));
+  Bool* visited = malloc(sizeof(int)*getSize(graph->nodes));
+  for(int i=0; i<getSize(graph->nodes); i++){
+    dist[i]=INT_MAX;
+    visited[i] = false;
+  }
+  dist[findIndexOf(graph->nodes,src)] = 0;
+
+  for(int src_node=0; src_node<getSize(graph->nodes); src_node++){
+    int min=INT_MAX, minIDX;
+    for(int dest_node=0; dest_node<getSize(getINode(graph,src)->edges_out); dest_node++){
+      if(getIJEdge(src_node,dest_node)->weight < min && visited==false){
+        min = getIJEdge(src_node,dest_node)->weight;
+        minIDX = dest_node;
+      }
+    }
+      visited[minIDX]=true;
+
+    for(int dest_node=0; dest_node<getSize(getINode(graph,src)->edges_out); dest_node++){
+      pEdge edge = getIJEdge(minIDX,dest_node);
+
+      if(visited[dest_node]==false && edge!=NULL && dist[edge->src]+edge->weight < dist[edge->dest]
+         && dist[edge->src]!=INT_MAX ){
+            dist[edge->dest] = dist[edge->src]+edge->weight;
+      }
+    }
+  }
+  free(visited);
 
 
-pList shortestPath(){
-  
+
+
+
+
+  return dist;
+
 }

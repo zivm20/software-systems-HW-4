@@ -8,6 +8,7 @@
 #define NODE_STRUCT_
 typedef struct _NODE{
   int id;
+  int distance;
   pList edges_out;
 }Node, *pNode;
 
@@ -48,6 +49,7 @@ pNode createNode(int id){
       return NULL;
     }
     node->id = id;
+    node->distance = 0;
   }
   return node;
 }

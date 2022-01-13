@@ -23,7 +23,7 @@ int main(){
     ungetc(current_char,stdin);
 
     if(current_char == 'A'){
-      scanf("%c %d ",&current_function,&V_size);
+      scanf("%c %d",&current_function,&V_size);
       if(graph != NULL){
         free(graph);
       }
@@ -34,40 +34,47 @@ int main(){
     else if(current_char == 'T'){
       int tsp_k_size;
       int idx = 0;
-      scanf("%c %d ",&current_function,&tsp_k_size);
+      scanf("%c %d",&current_function,&tsp_k_size);
       current_function = 'T';
 
       int *tspNodes  = (int*)malloc(tsp_k_size*sizeof(int));
       while(tsp_k_size > idx){
         int node_target;
-        scanf("%d ",&node_target);
+        scanf(" %d",&node_target);
         tspNodes[idx] = node_target;
         idx++;
       }
-      pList lst = TSP(graph, tspNodes);
-      printList(lst);
-      deleteList(lst);
+      //pList lst = TSP(graph, tspNodes);
+      idx = 0;
+      printf("tsp:\n");
+      while(tsp_k_size > idx){
+        printf("%d\n",tspNodes[idx]);
+        idx++;
+      }
+      printf("-------\n");
+
+      //printList(lst);
+      //deleteList(lst);
       free(tspNodes);
     }
     else if(current_char == 'S'){
       int n1,n2;
-      scanf("%c %d %d ",&current_function,&n1,&n2);
-      pList lst = shortestPath(graph,n1,n2);
-      printList(lst);
-      deleteList(lst);
+      scanf("%c %d %d",&current_function,&n1,&n2);
+      int pathLen = shortestPath(graph,n1,n2);
+
     }
     else if(current_char == 'D'){
       int node_id;
-      scanf("%c %d ",&current_function,&node_id);
-      removeNode(graph,n1);
+      scanf("%c %d",&current_function,&node_id);
+      //removeNode(graph,node_id);
     }
     else if(current_char == 'B'){
       scanf("%c %d",&current_function,&node_num);
       addNode(graph,node_num);
     }
-    else if(current_function == 'A' || current_function == 'B'){
+    else if(current_char!=' ' &&(current_function == 'A' || current_function == 'B')){
       if(current_char == 'n'){
-        scanf("n %d ",&node_num);
+        scanf(" n %d",&node_num);
         //printf("36: n %d \n",node_num);
         //printf("n %d ",node_num);
         //printf("%d\n",node_num);
@@ -76,8 +83,8 @@ int main(){
 
       }
       else{
-        scanf("%d %d ",&dest,&weight);
-
+        scanf(" %d %d",&dest,&weight);
+        //printf("(%d->%d)(%d)",node_num,dest,weight);
         addEdge(graph,node_num,dest,weight);
 
       }
@@ -89,7 +96,7 @@ int main(){
     iter++;
 
 
-  }while(iter < 15 && current_char!='\n');
+  }while(current_char!='\n');
   printGraph(graph);
   delGraph(graph);
   printf("done");

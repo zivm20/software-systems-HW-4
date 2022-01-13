@@ -18,6 +18,7 @@ Bool addElem(pList,pElement);
 Bool removeElem(pList,pElement);
 void printList(pList);
 void deleteList(pList);
+int getSize(pList);
 
 pElement get(pList,int);
 int indexOf(pList, pElement);
