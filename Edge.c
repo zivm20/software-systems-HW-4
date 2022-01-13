@@ -1,40 +1,50 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "List.h"
-#include "Node.c"
 
-typedef struct _Node *pNode;
+#ifndef EDGE_STRUCT_
+#define EDGE_STRUCT_
+
 typedef struct _Edge{
   int weight;
-  pNode dest;
+  int dest;
+  int src;
 }Edge, *pEdge;
 
-pKey edgeKey(pElement pElem){
+
+int getEdgeDest(pElement pElem){
   pEdge edge = (pEdge) pElem;
-  int* out = &(dest->id);
-  return out;
+  return edge->dest;
 }
 
-Bool compareEdge(pKey e1,pkey e2){
-  return ((*int)e1 == (*int)e2)? true:false;
+Bool compareEdge(pElement e1,pElement e2){
+  pEdge edge1 = (pEdge) e1;
+  pEdge edge2 = (pEdge) e2;
+
+  if(edge1->dest == edge2->dest && edge1->src == edge2->src){
+    return true;
+  }
+  return false;
 }
 
 void delEdge(pElement pElem){
   pEdge edge = (pEdge) pElem;
-  edge->dest = NULL;
   free(edge);
 
 }
 void printEdge(pElement pElem){
   pEdge edge = (pEdge) pElem;
-  printf("%d:%d",edge->dest->id,edge->weight);
+  printf("%d:%d",edge->dest,edge->weight);
 }
 
-pEdge createEdge(pNode dest,int weight){
+pEdge createEdge(int src, int dest,int weight){
   pEdge edge;
-  if(edge = (pEdge)malloc(sizeof(Edge))){
-    edge->weight=weight;
+  if((edge = (pEdge)malloc(sizeof(Edge)))){
+    edge->src = src;
+    edge->weight = weight;
     edge->dest = dest;
   }
   return edge;
 }
+
+#endif

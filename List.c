@@ -5,7 +5,7 @@
 
 
 
-typedef List_{
+typedef struct List_{
     pElement *elements;
     int size;
     int used;
@@ -18,29 +18,14 @@ typedef List_{
 
 
 
-static int internalFind(pList pLst, pKey key){
-  pKey pElemKey;
-  int i;
-  for(i=0; i<pLst->used; i++){
-    pElemKey = pLst->getKeyFunc(pLst->elements[i]);
-    if(pLst->getKeyFunc(key,pElemKey)){
-      return i;
-    }
-  }
-  return -1;
-}
-
-
-
-
-pList CreateList(GET_KEY getKeyFunc,
+pList createList(GET_KEY getKeyFunc,
   DELETE_ELEMENT delElementFunc,
   COMPARE CompareFunc,
   PRINT_ELEMENT printElementFunc)
 {
 
-  pList pLst;
-  if(pLst = (pList)malloc(sizeof(pList))){
+  pList pLst = (pList)malloc(sizeof(List)) ;
+  if( pLst != NULL){
     pLst->elements = NULL;
     pLst->size = 0;
     pLst->used = 0;
@@ -49,21 +34,22 @@ pList CreateList(GET_KEY getKeyFunc,
     pLst->CompareFunc = CompareFunc;
     pLst->printElementFunc = printElementFunc;
   }
+
   return pLst;
 }
 
-Bool AddElem(pList pLst,pElement pElem){
+Bool addElem(pList pLst,pElement pElem){
 
   if(pLst == NULL || pElem == NULL){
     return false;
   }
-  if(pLst->used == plst->size){
+  if(pLst->used == pLst->size){
     pLst->size = pLst->size+1;
-    pElement *temp = (pElement*)realloc(pLst->elements,plst->size * sizeof(pElement));
+    pElement *temp = (pElement*)realloc(pLst->elements,pLst->size * sizeof(pElement));
     if(temp==NULL){
-      printf("re-allocation error");
-      deleteList(pLst);
-      exist(0);
+      printf("list re-allocation error");
+
+      return false;
     }
     else{
       pLst->elements = temp;
@@ -75,20 +61,29 @@ Bool AddElem(pList pLst,pElement pElem){
   return true;
 }
 
-pElement GetListElem(pList pLst, pKey key){
-  int idx = internalFind(pLst,key);
-  return (idx>=0)? pLst->elements[idx]:NULL;
+int indexOf(pList pLst, pElement target){
+  return findIndexOf(pLst,pLst->getKeyFunc(target));
 }
 
-pElement get(pList pLst, int key){
-  if(pLst->used > key){
-    return pLst->elements[key];
+int findIndexOf(pList pLst, int target_key){
+  int i;
+  for(i=0; i<pLst->used; i++){
+    if(target_key == pLst->getKeyFunc(pLst->elements[i])){
+      return i;
+    }
+  }
+  return -1;
+}
+
+pElement get(pList pLst, int idx){
+  if(pLst->used > idx){
+    return pLst->elements[idx];
   }
   return NULL;
 }
 
-Bool removeElem(pList pLst, pKey key){
-  int idx = internalFind(pLst,key);
+Bool removeElem(pList pLst, pElement target){
+  int idx = indexOf(pLst,target);
   if(idx >= 0){
     pLst->delElementFunc(pLst->elements[idx]);
     //make sure pointer isn't initialized
@@ -99,7 +94,7 @@ Bool removeElem(pList pLst, pKey key){
       idx++;
     }
     pLst->elements[pLst->used - 1] = NULL;
-    plst->used--;
+    pLst->used--;
     return true;
   }
   return false;
@@ -123,6 +118,14 @@ void printList(pList pLst){
   printf("]");
 }
 
+Bool isin(pList pLst, pElement pElem){
+
+  if(indexOf(pLst,pElem) != -1){
+    return true;
+  }
+  return false;
+
+}
 
 void deleteList(pList pLst){
   int i;

@@ -1,17 +1,15 @@
 CC=gcc
-FLAGS=-Wall -ggdb3 -g
+FLAGS=-Wall -fPIC -ggdb3 -g
 OBJECTS_MAIN=main.o
-LIB_OBJECTS=Graph.o
-LIB_so=Graph.so
 
 
-all: $(LIB_so) graph
 
+all: lib.so graph
 
 #create main program
-graph: $(OBJECTS_MAIN) $(LIB_so)
-	$(CC) $(FLAGS) -o graph $(OBJECTS_MAIN) ./$(LIB_so) -lm
-
+graph: lib.so $(OBJECTS_MAIN)
+	$(CC) $(FLAGS) -o graph $(OBJECTS_MAIN) ./lib.so -lm
+#
 
 
 #clean
@@ -21,17 +19,19 @@ clean:
 .PHONY: clean all
 
 
-#compile dependencies
-%.so: %.o
-	$(CC) -shared -o $@ $<
-
-%.a: %.o
-	ar -rcs -o $@ $<
 
 #compile objects
-stringFunctions.o: Graph.h Graph.c
-	$(CC) $(FLAGS) -c Graph.c
+List.o: List.h List.c
+	$(CC) $(FLAGS) -c List.c
 
+Node.o: List.h Node.c
+	$(CC) $(FLAGS) -c Node.c List.c
+
+Graph.o: List.h Graph.h Graph.c
+	$(CC) $(FLAGS) -c Graph.c List.c
+
+lib.so: Graph.o List.o
+	$(CC) -shared Graph.o List.o -o $@
 
 main.o: main.c Graph.h
 	$(CC) $(FLAGS) -c main.c
