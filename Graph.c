@@ -54,16 +54,19 @@ void add_node(pGraph g,int id){
   pNode current;
 
   if(g->head != NULL || g->head->id >= id){
+    //trying to create a node that exists as head
     if(g->head->id==id){
       del_out_edges(current->next);
     }
+    //creating a node smaller than head id
     else{
       pNode temp = createNode(id);
       temp->next = g->head;
       g->head = temp;
+      g->size += 1;
     }
   }
-  else{
+  else if (g->head != NULL){
     current = g->head;
     while(current->next != NULL && current->next->id < id){
       current = current->next;
@@ -75,7 +78,12 @@ void add_node(pGraph g,int id){
       pNode temp = createNode(id);
       temp->next = current->next;
       current->next = temp;
+      g->size += 1;
     }
+  }
+  else{
+    g->head = createNode(id);
+    g->size = 1
   }
 }
 
@@ -138,11 +146,21 @@ void delete_graph(pGraph g){
   free(g);
 }
 
-void delete_node(pGraph g,pNode node){
-  del_in_edges(g,node);
-  //printf("del in edges complete for %d\n",node->id);
-  del_out_edges(node);
-  //printf("del out edges complete for %d\n",node->id);
+void delete_node(pGraph g,int id){
+  pNode node = get_node(g,id);
+  if node != NULL{
+    del_in_edges(g,node);
+    //printf("del in edges complete for %d\n",node->id);
+    del_out_edges(node);
+    //printf("del out edges complete for %d\n",node->id);
+    pNode current = g->head;
+    while(current->id <= id){
+      if(current->id == id ){
+        return current;
+      }
+      current=current->next;
+    }
+  }
 }
 
 pNode get_node(pGraph g, int id){

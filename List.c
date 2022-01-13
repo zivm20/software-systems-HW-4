@@ -69,6 +69,8 @@ Bool AddElem(pList pLst,pElement pElem){
       pLst->elements = temp;
     }
   }
+  pLst->elements[pLst->used]=pElem;
+  pLst->used++;
 
   return true;
 }

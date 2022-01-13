@@ -11,11 +11,11 @@ typedef struct _NODE{
 
 pKey nodeKey(pElement pElem){
   pNode node = (pNode) pElem;
-  int* out = &(node->id)
+  int* out = &(node->id);
   return out;
 }
 
-Bool compare(pKey e1,pkey e2){
+Bool compareNode(pKey e1,pkey e2){
   return ((*int)e1 == (*int)e2)? true:false;
 }
 
@@ -28,10 +28,6 @@ void delNode(pElement pElem){
   free(node);
 
 }
-Bool insertNode(){
-
-}
-
 void printNode(pElement pElem){
   pNode node = (pNode) pElem;
   printf("%d: ",node->id);
