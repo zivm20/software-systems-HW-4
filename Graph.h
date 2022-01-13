@@ -20,6 +20,7 @@ Bool addNode(pGraph graph,int id);
 void delGraph(pGraph graph);
 void printGraph(pGraph graph);
 
+int* shortestPath(pGraph,int);
 
 
 

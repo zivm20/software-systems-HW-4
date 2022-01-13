@@ -113,44 +113,57 @@ void delGraph(pGraph graph){
 pNode getINode(pGraph graph, int i){
   return (pNode)get(graph->nodes,i);
 }
-pEdge getIJEdge(pGraphgraph,int i, int j){
+pEdge getIJEdge(pGraph graph,int i, int j){
   return (pEdge) get(getINode(graph,i)->edges_out,j);
 }
 
 int* shortestPath(pGraph graph, int src){
-  int* dist = malloc(sizeof(int)*getSize(graph->nodes));
-  Bool* visited = malloc(sizeof(int)*getSize(graph->nodes));
+  int maxID = INT_MIN;
+  for(int i=0; i<getSize(graph->nodes); i++){
+    if(getINode(graph,i)->id>maxID){
+      maxID = getINode(graph,i)->id;
+    }
+  }
+
+  int* dist =(int*) malloc(sizeof(int)*(maxID+1));
+  int* visited = (int*)malloc(sizeof(int)*getSize(graph->nodes));
   for(int i=0; i<getSize(graph->nodes); i++){
     dist[i]=INT_MAX;
     visited[i] = false;
   }
-  dist[findIndexOf(graph->nodes,src)] = 0;
+  dist[src] = 0;
 
   for(int src_node=0; src_node<getSize(graph->nodes); src_node++){
-    int min=INT_MAX, minIDX;
-    for(int dest_node=0; dest_node<getSize(getINode(graph,src)->edges_out); dest_node++){
-      if(getIJEdge(src_node,dest_node)->weight < min && visited==false){
-        min = getIJEdge(src_node,dest_node)->weight;
-        minIDX = dest_node;
+    int min=INT_MAX, minIDX = -1;
+    for(int node_idx=0; node_idx<getSize(graph->nodes); node_idx++){
+      pNode node = getINode(graph,node_idx);
+      if(dist[node->id] < min && visited[node_idx]==false){
+        min = dist[node->id];
+        minIDX = node_idx;
       }
     }
+
+    if(minIDX != -1){
       visited[minIDX]=true;
-
-    for(int dest_node=0; dest_node<getSize(getINode(graph,src)->edges_out); dest_node++){
-      pEdge edge = getIJEdge(minIDX,dest_node);
-
-      if(visited[dest_node]==false && edge!=NULL && dist[edge->src]+edge->weight < dist[edge->dest]
-         && dist[edge->src]!=INT_MAX ){
-            dist[edge->dest] = dist[edge->src]+edge->weight;
+      for(int dest_node=0; dest_node<getSize(getINode(graph,src)->edges_out); dest_node++){
+        pEdge edge = getIJEdge(graph,minIDX,dest_node);
+        if(edge != NULL){
+          if(visited[findIndexOf(graph->nodes,edge->dest)]==false && dist[edge->src]+edge->weight < dist[edge->dest]
+             && dist[edge->src]!=INT_MAX ){
+                dist[edge->dest] = dist[edge->src]+edge->weight;
+          }
+        }
       }
     }
   }
   free(visited);
 
+  for(int i=0; i<maxID+1; i++){
+    if(dist[i] == INT_MAX){
+      dist[i] = -1;
+    }
 
-
-
-
+  }
 
   return dist;
 

@@ -60,8 +60,15 @@ int main(){
     else if(current_char == 'S'){
       int n1,n2;
       scanf("%c %d %d",&current_function,&n1,&n2);
-      int pathLen = shortestPath(graph,n1,n2);
+      int* pathLens = shortestPath(graph,n1);
+      int idx = 0;
+      while(4 > idx){
+        printf("%d\n",pathLens[idx]);
+        idx++;
+      }
 
+      printf("shortest path: %d\n",pathLens[n2]);
+      free(pathLens);
     }
     else if(current_char == 'D'){
       int node_id;
